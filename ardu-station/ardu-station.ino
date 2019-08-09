@@ -77,9 +77,7 @@ void setup()
   
   //Se inicializa LCD
   lcd.begin(16, 2);
-  // Mover el cursor a la primera posición de la pantalla (0, 0)
-  lcd.clear();
-
+  
   // initialize the ethernet device
   Ethernet.begin(mac, ip, dnServer, gateway, subnet);
 
