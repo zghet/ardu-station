@@ -86,9 +86,6 @@ void setup()
   //inicializar servidor web
   server.begin();
   Serial.println("Server inicializado");
-  Serial.print("IP:" &IPAddress);
-
-
 }
 
 ////////////////////////////////////////////////////////////////////////////
