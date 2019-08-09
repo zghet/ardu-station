@@ -34,6 +34,8 @@ IPAddress ip(192, 168, 15, 20);
 //InicializarCrear la instancia del server
 EthernetServer server(81);
 
+//REST
+aREST rest = aREST();
 
 //////////////////////statement of variables and ports///////////////////////////////////
 
@@ -41,9 +43,6 @@ EthernetServer server(81);
 #define DHTPIN 2
 // Dependiendo del tipo de sensor
 #define DHTTYPE DHT11
-
-// Inicializamos el sensor DHT11
-DHT dht(DHTPIN, DHTTYPE);
 
 // Inicializamos el sensor DHT11
 DHT dht(DHTPIN, DHTTYPE);
@@ -56,7 +55,7 @@ DHT dht(DHTPIN, DHTTYPE);
 void setup()
 {
   //Inicializamos aREST
-  aRest rest = aREST();
+  aREST rest = aREST();
 
   // Inicializamos comunicación serie
   Serial.begin(9600);
