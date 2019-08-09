@@ -91,8 +91,8 @@ void setup()
 void loop() 
 {
 
-  // Esperamos 4 segundos entre medidas
-  delay(500);
+  // Esperamos 3 segundos entre medidas
+  delay(3000);
 
  // Leemos la humedad relativa
   float h = dht.readHumidity();
@@ -103,12 +103,9 @@ void loop()
   if (isnan(h) || isnan(t))
   {
     Serial.println("Error obteniendo los datos del sensor DHT11");
+    lcd.println("Error obteniendo los datos del sensor DHT11");
     return;
   }
- 
-    // Calcular el índice de calor en grados centígrados
-  float hic = dht.computeHeatIndex(t, h, false);
-
  
   /////////////////////////////////////////////////
   
@@ -123,5 +120,6 @@ void loop()
   lcd.print("Humedad: ");
   lcd.setCursor(8,1);
   lcd.print(h);
+
 
 }
