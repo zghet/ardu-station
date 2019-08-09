@@ -27,7 +27,8 @@ void setup() {
   //lcd.setCursor(0,1);
   //lcd.write(" ");
   
- 
+
+
 }
  
 void loop() {
@@ -56,10 +57,10 @@ void loop() {
  
   Serial.print("Humedad: ");
   Serial.print(h);
-  Serial.print(" %");
+  Serial.print(" % ");
   Serial.print("Temperatura: ");
   Serial.print(t);
-  Serial.print(" *C");
+  Serial.print(" *C\n");
   
   //Serial.print(f);
   //Serial.print(" *F\t");
@@ -69,20 +70,11 @@ void loop() {
   //Serial.print(hif);
   //Serial.println(" *F");
 
-
-  lcd.begin(16, 2);
-  lcd.setCursor(0,0);
-  lcd.print("Humedad: ");
-  lcd.setCursor(8,0);
-  lcd.print(h);
-  lcd.print(" %");
-  lcd.setCursor(0,1);
-  lcd.print("Temperatura: ");
+  //Prueba de LCD
+   delay(4000);
+   lcd.setCursor(0,0);
+  lcd.write("Temp: ");
+  lcd.setCursor(5,0);
   lcd.print(t);
-  lcd.print(" *C");
-  lcd.setCursor(11,1);
-  lcd.print("Índice de calor: ");
-  lcd.print(hic);
-  lcd.print(" *C \n");
  
 }
