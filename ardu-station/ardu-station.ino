@@ -1,5 +1,11 @@
+
+//incluimos libreria de twitter
+#include <TwitterApi.h>
+#include <TwitterBearerToken.h>
+
 // Incluimos librería de sensor de temperatura y humedad
 #include <DHT.h>
+
 
 //libreria APIRest
 #include <aREST.h>
