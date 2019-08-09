@@ -54,6 +54,10 @@ DHT dht(DHTPIN, DHTTYPE);
 //definimos variables para la api
 float humidity, temperature;
 
+#Se agrega token de twitter
+Twitter twitter("1137504199711907841-YfS6jm2ZmMs2JWlXn54fE5hxmiKSf1");
+
+
 ////////////////////////////////////////////////////////////////////////////
 
 void setup()
