@@ -6,10 +6,6 @@
 // Incluimos librería de sensor de temperatura y humedad
 #include <DHT.h>
 
-
-//libreria APIRest
-#include <aREST.h>
-
 //libreria Ethernet
 #include <SPI.h>
 #include <Ethernet.h>
@@ -54,8 +50,6 @@ DHT dht(DHTPIN, DHTTYPE);
 //Ports
 #define LISTEN_PORT 81
 
-//rest
-aREST rest = aREST();
 
 //definimos variables para la api
 float humidity, temperature;
