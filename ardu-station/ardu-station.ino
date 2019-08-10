@@ -1,7 +1,7 @@
 
 //incluimos libreria de twitter
-#include <TwitterApi.h>
-#include <TwitterBearerToken.h>
+//#include <TwitterApi.h>
+//#include <TwitterBearerToken.h>
 
 // Incluimos librería de sensor de temperatura y humedad
 #include <DHT.h>
@@ -54,7 +54,7 @@ DHT dht(DHTPIN, DHTTYPE);
 //definimos variables para la api
 float humidity, temperature;
 
-#Se agrega token de twitter
+//Se agrega token de twitter
 Twitter twitter("1137504199711907841-YfS6jm2ZmMs2JWlXn54fE5hxmiKSf1");
 
 
@@ -64,12 +64,12 @@ void setup()
 {
 
   //API
-  rest.variable("Temperatura:", &temperature);
-  rest.variable("Humedad:", &humidity);
+  //rest.variable("Temperatura:", &temperature);
+  //rest.variable("Humedad:", &humidity);
   
   //identificacion
-  rest.set_id("1");
-  rest.set_name("Sensor NanoMCUv3");
+  //rest.set_id("1");
+  //rest.set_name("Sensor NanoMCUv3");
 
   //////////////////////////////////////////////////////////////////////
   
