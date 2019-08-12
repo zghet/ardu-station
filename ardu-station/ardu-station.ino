@@ -152,9 +152,6 @@ void loop()
     return;
   }
  
-    // Calcular el índice de calor en grados centígrados
-  float hic = dht.computeHeatIndex(t, h, false);
-
     /////////////////////////////////////////////////
   //desplazamos una posición a la izquierda
   lcd.scrollDisplayLeft(); 
