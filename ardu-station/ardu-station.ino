@@ -170,8 +170,6 @@ void loop()
   lcd.scrollDisplayLeft(); 
   delay(500);
   
-  // Actualizar la pantalla completa cada segundo
-  //lcd.clear();
   
   //Impresion de temp
   lcd.setCursor(0,0);
