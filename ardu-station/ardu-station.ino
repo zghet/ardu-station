@@ -155,17 +155,7 @@ void loop()
     // Calcular el índice de calor en grados centígrados
   float hic = dht.computeHeatIndex(t, h, false);
 
-  //Se deja la impresion en buffer por si se ocupa
-  //Impresion Serial
-  //Serial.print("Humedad: ");
-  //Serial.print(h);
-  //Serial.print(" % ");
-  //Serial.print("Temperatura: ");
-  //Serial.print(t);
-  //Serial.print(" *C\n ");
-
-
-  /////////////////////////////////////////////////
+    /////////////////////////////////////////////////
   //desplazamos una posición a la izquierda
   lcd.scrollDisplayLeft(); 
   delay(500);
