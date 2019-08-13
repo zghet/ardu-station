@@ -1,9 +1,6 @@
 // Incluimos librería de sensor de temperatura y humedad
 #include <DHT.h>
 
-//libreria APIRest
-#include <aREST.h>
-
 //libreria Ethernet
 #include <SPI.h>
 #include <Ethernet.h>
@@ -34,9 +31,6 @@ IPAddress ip(192, 168, 15, 20);
 //InicializarCrear la instancia del server
 EthernetServer server(81);
 
-//REST
-aREST rest = aREST();
-
 //////////////////////statement of variables and ports///////////////////////////////////
 
 // Definimos el pin digital donde se conecta el sensor
@@ -54,8 +48,6 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup()
 {
-  //Inicializamos aREST
-  aREST rest = aREST();
 
   // Inicializamos comunicación serie
   Serial.begin(9600);
@@ -64,7 +56,7 @@ void setup()
   dht.begin();
   
   //Se inicializa LCD
-  lcd.begin(16, 2);
+  lcd.begin(16,2);
   // Mover el cursor a la primera posición de la pantalla (0, 0)
   lcd.clear();
 
@@ -82,65 +74,73 @@ void setup()
 
 void loop() 
 {
-    /////////////Se establece el html del server
-  EthernetClient client = server.available();  // Buscamos entrada de clientes
-  if (client) 
-  { 
-    Serial.println("new client");
-    boolean currentLineIsBlank = true;  // Las peticiones HTTP finalizan con linea en blanco
-    while (client.connected())
-    {
-      if (client.available())
-      {  
-        char c = client.read();
-        Serial.write(c);   // Esto no es necesario, pero copiamos todo a la consola
-        // A partir de aquí mandamos nuestra respuesta
-        if (c == '\n' && currentLineIsBlank) 
-        {   
-          // Enviar una respuesta tipica
-          client.println("HTTP/1.1 200 OK");             
-          client.println("Content-Type: text/html");
-          client.println("Connection: close");
-          client.println("Refresh: 15");            // Actualizar cada 15 segs
-          client.println();
-          client.println("<!DOCTYPE HTML>");
-          client.println("<html>");
-          float h = dht.readHumidity();           // Leer el sensor
-          float t = dht.readTemperature();
-          Serial.println(t);
-          Serial.println(h);
-          // Desde aqui creamos nuestra pagina con el codigo HTML que pongamos
-          client.print("<head><title>Situacion del lugar</title></head>");
-          client.print("<body><h1> Situacion Ambiente</h1><p>Temperatura -");
-          client.print(t);     // Aqui va la temperatura
-          client.print(" grados Celsius</p>");
-          client.print("<p>Humedad:  ");
-          client.print(h);    // Aqui va la humedad
-          client.print(" porciento</p>");
-          client.print("<p><em> La página se actualiza cada 15 segundos.</em></p></body></html>");
-          break;
-        }
-        if (c == '\n')
-        {
-          currentLineIsBlank = true;          // nueva linea
-        }
-        else if (c != '\r')
-        {
-          currentLineIsBlank = false;
-        }
-      }
-    }
-    delay(10);         // Para asegurarnos de que los datos se envia
-    client.stop();     // Cerramos la conexion
-    Serial.println("client disonnected");
-  }
 
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// if an incoming client connects, there will be bytes available to read:
+EthernetClient client = server.available();
+if (client == true) 
+{
+ // read bytes from the incoming client and write them back
+ // to any clients connected to the server:
+ server.write(client.read());
+}
+//  /////////////Se establece el html del server
+//EthernetClient client = server.available();  // Buscamos entrada de clientes
+//if (client) 
+//{ 
+//  Serial.println("new client");
+//  boolean currentLineIsBlank = true;  // Las peticiones HTTP finalizan con linea en blanco
+//  while (client.connected())
+//  {
+//    if (client.available())
+//    {  
+//      char c = client.read();
+//      Serial.write(c);   // Esto no es necesario, pero copiamos todo a la consola
+//      // A partir de aquí mandamos nuestra respuesta
+//      if (c == '\n' && currentLineIsBlank) 
+//      {   
+//        // Enviar una respuesta tipica
+//        client.println("HTTP/1.1 200 OK");             
+//        client.println("Content-Type: text/html");
+//        client.println("Connection: close");
+//        client.println("Refresh: 15");            // Actualizar cada 15 segs
+//        client.println();
+//        client.println("<!DOCTYPE HTML>");
+//        client.println("<html>");
+//        float h = dht.readHumidity();           // Leer el sensor
+//        float t = dht.readTemperature();
+//        Serial.println(t);
+//        Serial.println(h);
+//        // Desde aqui creamos nuestra pagina con el codigo HTML que pongamos
+//        client.print("<head><title>Situacion del lugar</title></head>");
+//        client.print("<body><h1> Situacion Ambiente</h1><p>Temperatura -");
+//        client.print(t);     // Aqui va la temperatura
+//        client.print(" grados Celsius</p>");
+//        client.print("<p>Humedad:  ");
+//        client.print(h);    // Aqui va la humedad
+//        client.print(" porciento</p>");
+//        client.print("<p><em> La página se actualiza cada 15 segundos.</em></p></body></html>");
+//        break;
+//      }
+//      if (c == '\n')
+//      {
+//        currentLineIsBlank = true;          // nueva linea
+//      }
+//      else if (c != '\r')
+//      {
+//        currentLineIsBlank = false;
+//      }
+//    }
+//  }
+//  delay(20);         // Para asegurarnos de que los datos se envia
+//  client.stop();     // Cerramos la conexion
+//  Serial.println("client disonnected");
+//}
+
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Esperamos 4 segundos entre medidas
-  delay(500);
-
- // Leemos la humedad relativa
+  delay(200);
+  // Leemos la humedad relativa
   float h = dht.readHumidity();
   // Leemos la temperatura en grados centígrados (por defecto)
   float t = dht.readTemperature();
@@ -148,31 +148,27 @@ void loop()
   // Comprobamos si ha habido algún error en la lectura
   if (isnan(h) || isnan(t))
   {
+    lcd.clear();
     Serial.println("Error obteniendo los datos del sensor DHT11");
+    lcd.setCursor(0,0);
+    lcd.print("Error obteniendo");
+    lcd.setCursor(0,1);
+    lcd.print("los datos del sensor DHT11");
     return;
   }
- 
-    /////////////////////////////////////////////////
-  //desplazamos una posición a la izquierda
-  lcd.scrollDisplayLeft(); 
-  delay(500);
-  
-  
+
   //Impresion de temp
+  lcd.scrollDisplayLeft(); 
   lcd.setCursor(0,0);
   lcd.write("Temp: ");
   lcd.setCursor(5,0);
   lcd.print(t);
-  
   //Impresion de  humedad 
   lcd.setCursor(0,1);
-  lcd.print("Humedad: ");
+  lcd.write("Humedad: ");
   lcd.setCursor(8,1);
   lcd.print(h);
+  
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  //Impresion de ip
-  lcd.setCursor(14,0);
-  lcd.print("IP: ");
-  lcd.setCursor(17,0);
-  lcd.print("192.168.15.20"); 
 }
