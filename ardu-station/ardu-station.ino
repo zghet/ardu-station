@@ -44,6 +44,10 @@ DHT dht(DHTPIN, DHTTYPE);
 //Ports
 #define LISTEN_PORT 81
 
+//Se declaran variables para lectura de sensor de movimiento
+const int LEDPin = 8;        // pin para el LED
+const int PIRPin = 3;         // pin de entrada (for PIR sensor)
+
 ////////////////////////////////////////////////////////////////////////////
 
 void setup()
