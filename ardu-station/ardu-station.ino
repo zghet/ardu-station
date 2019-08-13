@@ -47,6 +47,8 @@ DHT dht(DHTPIN, DHTTYPE);
 //Se declaran variables para lectura de sensor de movimiento
 const int LEDPin = 8;        // pin para el LED
 const int PIRPin = 3;         // pin de entrada (for PIR sensor)
+int pirState = LOW;           // de inicio no hay movimiento
+int val = 0;                  // estado del pin
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -71,21 +73,70 @@ void setup()
   server.begin();
   Serial.println("Server inicializado");
 
-
+  //Se inicializan los pins de entrada y salida para el pir
+   pinMode(LEDPin, OUTPUT); 
+   pinMode(PIRPin, INPUT);
 }
 
-////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////
 
 void loop() 
 {
-/////////////Se establece el html del server
-EthernetClient client = server.available();  // Buscamos entrada de clientes
-if (client) 
-{ 
+  //Time para programa general
+  delay(200);
+  // Leemos la humedad relativa
+  float h = dht.readHumidity();
+  // Leemos la temperatura en grados centígrados (por defecto)
+  float t = dht.readTemperature();
 
-  boolean currentLineIsBlank = true;  // Las peticiones HTTP finalizan con linea en blanco
-  while (client.connected())
+  // Comprobamos si ha habido algún error en la lectura y de ser asi lo imrpimimos
+  if (isnan(h) || isnan(t))
   {
+    lcd.clear();
+    Serial.println("Error obteniendo los datos del sensor DHT11");
+    lcd.setCursor(0,0);
+    lcd.print("Error obteniendo");
+    lcd.setCursor(0,1);
+    lcd.print("los datos del sensor DHT11");
+    return;
+  }
+
+  //Introduccion del sensor de movimiento
+  val = digitalRead(PIRPin);
+    if (val == HIGH)   //si está activado
+    { 
+       digitalWrite(LEDPin, HIGH);  //LED ON
+       if (pirState == LOW)  //si previamente estaba apagado
+       {
+        Serial.println("Sensor activado");
+        lcd.clear();
+        lcd.setCursor(11,0);
+        lcd.write("HIGH");
+        pirState = HIGH;
+       }
+    } 
+    else   //si esta desactivado
+    {
+       digitalWrite(LEDPin, LOW); // LED OFF
+       if (pirState == HIGH)  //si previamente estaba encendido
+       {
+         Serial.println("Sensor parado");
+         lcd.clear();
+         lcd.setCursor(11,1);
+         lcd.write("LOW");
+         pirState = LOW;
+       }
+    }
+
+ ///////////////////////////////////////Servidor Web////////////////////////////////////////////////////////
+
+  //Se establece el html del server
+  EthernetClient client = server.available();  // Buscamos entrada de clientes
+  if (client) 
+  { 
+    boolean currentLineIsBlank = true;  // Las peticiones HTTP finalizan con linea en blanco
+    while (client.connected())
+    {
     if (client.available())
     {  
       char c = client.read();
@@ -122,31 +173,12 @@ if (client)
         currentLineIsBlank = false;
       }
     }
+    }
+    delay(5);         // Para asegurarnos de que los datos se envia
+    client.stop();     // Cerramos la conexion
   }
-  delay(5);         // Para asegurarnos de que los datos se envia
-  client.stop();     // Cerramos la conexion
-}
 
- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // Esperamos 4 segundos entre medidas
-  delay(200);
-  // Leemos la humedad relativa
-  float h = dht.readHumidity();
-  // Leemos la temperatura en grados centígrados (por defecto)
-  float t = dht.readTemperature();
-   
-  // Comprobamos si ha habido algún error en la lectura
-  if (isnan(h) || isnan(t))
-  {
-    lcd.clear();
-    Serial.println("Error obteniendo los datos del sensor DHT11");
-    lcd.setCursor(0,0);
-    lcd.print("Error obteniendo");
-    lcd.setCursor(0,1);
-    lcd.print("los datos del sensor DHT11");
-    return;
-  }
+  //////////////////////////////////////Impresion de informacion/////////////////////////////////////////////
 
   //Impresion de temp
   //lcd.scrollDisplayLeft(); 
@@ -156,10 +188,10 @@ if (client)
   lcd.print(t);
   //Impresion de  humedad 
   lcd.setCursor(0,1);
-  lcd.write("Humedad: ");
-  lcd.setCursor(8,1);
+  lcd.write("Hum: ");
+  lcd.setCursor(5,1);
   lcd.print(h);
-  
- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
