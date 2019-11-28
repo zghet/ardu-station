@@ -1,76 +1,57 @@
-#include <Arduino.h>
+// se incluyen librerias
 #include <ESP8266WiFi.h>
-#include "fauxmoESP.h" 
 
 //Se mandan a llamar los archivos de wifi
 #include "config.h"
 #include "ESP8266-Util.hpp"
 
-#define SERIAL_BAUDRATE 115200
 
 // Se definen los dipositivos
-#define RELAY_PIN_1 1
-#define RELAY_PIN_2 2
-#define RELAY_PIN_3 3
-#define RELAY_PIN_4 4
-#define RELAY_PIN_5 5
-#define RELAY_PIN_6 6
+#define relay_1 3
+#define relay_2 4
 
-#define LAMPARA1 "luz cuarto"
-#define LAMPARA2 "luz visita"
-#define LIGHT3 "luz baño"
-#define LIGHT4 "luz sala"
+
+#include "fauxmoESP.h" 
+#define SERIAL_BAUDRATE 115200
+
+#define lamp1 "luz cuarto"
+#define lamp2 "luz visita"
+
 
 fauxmoESP fauxmo;
 
-
-
-
-void setup() {
+void setup() 
+{
   
   Serial.begin(SERIAL_BAUDRATE);
   Serial.println();
   
-  ConnectWiFi_STA();
+  wifiSetup();
 
   //Define relays
-  pinMode(RELAY_PIN_1, OUTPUT);
-  digitalWrite(RELAY_PIN_1, HIGH);
+  pinMode(relay_1, OUTPUT);
+  digitalWrite(relay_1, HIGH);
 
-  pinMode(RELAY_PIN_2, OUTPUT);
-  digitalWrite(RELAY_PIN_2, HIGH);
+  pinMode(relay_2, OUTPUT);
+  digitalWrite(relay_2, HIGH);
 
-  pinMode(RELAY_PIN_3, OUTPUT);
-  digitalWrite(RELAY_PIN_3, HIGH);
-
-  pinMode(RELAY_PIN_4, OUTPUT);
-  digitalWrite(RELAY_PIN_4, HIGH);
+  // Add virtual devices
+  fauxmo.addDevice(lamp1);
+  fauxmo.addDevice(lamp2);
   
+  // By default, fauxmoESP creates it's own webserver on the defined port
   fauxmo.createServer(true); // not needed, this is the default value
   fauxmo.setPort(80); // This is required for gen3 devices
   
+  // You have to call enable(true) once you have a WiFi connection
   fauxmo.enable(true);
-
-  // Add virtual devices
-  fauxmo.addDevice(LAMPARA1);
-  fauxmo.addDevice(LAMPARA2);
-  fauxmo.addDevice(LIGHT3);
-  fauxmo.addDevice(LIGHT4);
-
-
-
 
 }
 
-void loop() 
+void loop()
 {
   // fauxmoESP uses an async TCP server but a sync UDP server
   // Therefore, we have to manually poll for UDP packets
   fauxmo.handle();
 
-  static unsigned long last = millis();
-  if (millis() - last > 5000) {
-    last = millis();
-    Serial.printf("[MAIN] Free heap: %d bytes\n", ESP.getFreeHeap());
-  }
 }
