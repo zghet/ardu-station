@@ -1,12 +1,11 @@
-#include <Arduino.h>
+
+
 #include <ESP8266WiFi.h>
-#include "fauxmoESP.h" 
 
 //Se mandan a llamar los archivos de wifi
 #include "config.h"
 #include "ESP8266-Util.hpp"
 
-#define SERIAL_BAUDRATE 115200
 
 // Se definen los dipositivos
 #define RELAY_PIN_1 1
@@ -16,15 +15,15 @@
 #define RELAY_PIN_5 5
 #define RELAY_PIN_6 6
 
+#include "fauxmoESP.h" 
+#define SERIAL_BAUDRATE 115200 
+
 #define LAMPARA1 "luz cuarto"
 #define LAMPARA2 "luz visita"
 #define LIGHT3 "luz baño"
 #define LIGHT4 "luz sala"
 
 fauxmoESP fauxmo;
-
-
-
 
 void setup() 
 {
@@ -57,7 +56,7 @@ void setup()
   
   fauxmo.createServer(true); // not needed, this is the default value
   fauxmo.setPort(80); // This is required for gen3 devices
-    fauxmo.enable(true);
+fauxmo.enable(true);
 
 }
 
@@ -67,9 +66,4 @@ void loop()
   // Therefore, we have to manually poll for UDP packets
   fauxmo.handle();
 
-  static unsigned long last = millis();
-  if (millis() - last > 5000) {
-    last = millis();
-    Serial.printf("[MAIN] Free heap: %d bytes\n", ESP.getFreeHeap());
-  }
 }
