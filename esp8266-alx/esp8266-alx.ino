@@ -14,7 +14,7 @@
 #include "fauxmoESP.h" 
 #define SERIAL_BAUDRATE 115200
 
-#define lamp1 "luz cuarto"
+#define lamp1 "luz julio"
 #define lamp2 "luz visita"
 
 
