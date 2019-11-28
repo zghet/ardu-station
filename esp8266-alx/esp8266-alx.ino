@@ -26,7 +26,8 @@ fauxmoESP fauxmo;
 
 
 
-void setup() {
+void setup() 
+{
   
   Serial.begin(SERIAL_BAUDRATE);
   Serial.println();
@@ -45,11 +46,7 @@ void setup() {
 
   pinMode(RELAY_PIN_4, OUTPUT);
   digitalWrite(RELAY_PIN_4, HIGH);
-  
-  fauxmo.createServer(true); // not needed, this is the default value
-  fauxmo.setPort(80); // This is required for gen3 devices
-  
-  fauxmo.enable(true);
+
 
   // Add virtual devices
   fauxmo.addDevice(LAMPARA1);
@@ -57,8 +54,10 @@ void setup() {
   fauxmo.addDevice(LIGHT3);
   fauxmo.addDevice(LIGHT4);
 
-
-
+  
+  fauxmo.createServer(true); // not needed, this is the default value
+  fauxmo.setPort(80); // This is required for gen3 devices
+    fauxmo.enable(true);
 
 }
 
