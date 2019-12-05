@@ -1,4 +1,4 @@
-void ConnectWiFi_STA(bool useStaticIP=false)
+void wifiSetup(bool useStaticIP=false)
 {
     Serial.println("");
     WiFi.mode(WIFI_STA);
