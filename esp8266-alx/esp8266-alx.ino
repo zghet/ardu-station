@@ -7,7 +7,7 @@
 
 
 // Se definen los pines
-#define relay_one D0
+//#define relay_one D0
 #define relay_two D1
 #define relay_thr D2
 #define relay_for D3
@@ -28,6 +28,7 @@
 #define light7 "luz 7"
 #define light8 "luz 8"
 #define light9 "luz 9"
+#define light10 "luz 10"
 
 fauxmoESP fauxmo;
 
@@ -40,8 +41,8 @@ void setup() {
   wifiSetup();
 
   // LED define
-  pinMode(relay_one, OUTPUT);
-  digitalWrite(relay_one, HIGH);
+//  pinMode(relay_one, OUTPUT);
+//  digitalWrite(relay_one, HIGH);
 
   pinMode(relay_two, OUTPUT);
   digitalWrite(relay_two,HIGH);
@@ -82,7 +83,7 @@ void setup() {
   // "Alexa, turn lamp two on"
 
   // Add virtual devices
-  fauxmo.addDevice(light1);
+ // fauxmo.addDevice(light1);
   fauxmo.addDevice(light2);
   fauxmo.addDevice(light3);
   fauxmo.addDevice(light4);
@@ -98,17 +99,17 @@ void setup() {
   {
     Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
 
-    if ( (strcmp(device_name, "light1") == 0) )
-    {
-      if (!state)
-      {
-        digitalWrite(relay_one, HIGH);
-      }
-      else
-      {
-        digitalWrite(relay_one, LOW);
-      }
-    }
+    //if ( (strcmp(device_name, "light1") == 0) )
+   // {
+      //if (!state)
+      //{
+      //  digitalWrite(relay_one, HIGH);
+     // }
+     // else
+      //{
+      //  digitalWrite(relay_one, LOW);
+     // }
+   // }
 
     if ( (strcmp(device_name, "light2") == 0) )
     {
@@ -210,7 +211,7 @@ void setup() {
     {
       if (!state) 
       {
-        digitalWrite(relay_one, HIGH);
+        //digitalWrite(relay_one, HIGH);
         digitalWrite(relay_two, HIGH);
         digitalWrite(relay_thr, HIGH);
         digitalWrite(relay_for, HIGH);
@@ -222,7 +223,7 @@ void setup() {
       } 
       else 
       {
-        digitalWrite(relay_one, LOW);
+//        digitalWrite(relay_one, LOW);
         digitalWrite(relay_two, LOW);
         digitalWrite(relay_thr, LOW);
         digitalWrite(relay_for, LOW);
