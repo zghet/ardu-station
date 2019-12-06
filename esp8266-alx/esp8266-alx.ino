@@ -7,7 +7,7 @@
 
 
 // Se definen los pines
-//#define relay_one D0
+#define relay_one D0
 #define relay_two D1
 #define relay_thr D2
 #define relay_for D3
@@ -41,8 +41,8 @@ void setup() {
   wifiSetup();
 
   // LED define
-//  pinMode(relay_one, OUTPUT);
-//  digitalWrite(relay_one, HIGH);
+  pinMode(relay_one, OUTPUT);
+  digitalWrite(relay_one, HIGH);
 
   pinMode(relay_two, OUTPUT);
   digitalWrite(relay_two,HIGH);
@@ -83,7 +83,7 @@ void setup() {
   // "Alexa, turn lamp two on"
 
   // Add virtual devices
- // fauxmo.addDevice(light1);
+  fauxmo.addDevice(light1);
   fauxmo.addDevice(light2);
   fauxmo.addDevice(light3);
   fauxmo.addDevice(light4);
